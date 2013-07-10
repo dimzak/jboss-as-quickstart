@@ -16,19 +16,23 @@
  */
 package org.jboss.as.quickstarts.hsearch.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 @Entity
-// User is a keyword in some SQL dialects!
 @Indexed
 public class Quote {
 	
-	//@DocumentId is not needed
+	//@DocumentId is not required 
     @Id
     @GeneratedValue
     private Long id;
@@ -39,10 +43,9 @@ public class Quote {
     @Field
     private String text;
     
-    /* getters
-     * and
-     * setters
-     */
+    @IndexedEmbedded
+    @ManyToMany
+    private Set<Topic> topics = new HashSet<Topic>();
     
 	public Long getId() {
 		return id;
@@ -67,6 +70,15 @@ public class Quote {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	public Set<Topic> getTopics() {
+		return topics;
+	}
+
+	public void setTopics(Set<Topic> topics) {
+		this.topics = topics;
+	}
+	
 
 
     

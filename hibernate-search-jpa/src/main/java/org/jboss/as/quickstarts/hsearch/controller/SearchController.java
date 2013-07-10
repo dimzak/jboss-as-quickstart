@@ -61,7 +61,7 @@ public class SearchController {
     		   Query luceneQuery = qb.keyword()
     		      .onField("author")
     		      .andField("text")
-    		      //.andField("topic")
+    		      .andField("topics.name")
     		      .matching(searchStr)
     		      .createQuery();
     		    FullTextQuery objectQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
