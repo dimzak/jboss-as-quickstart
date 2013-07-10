@@ -16,5 +16,14 @@
 --
 
 INSERT INTO QUOTE (ID, AUTHOR, TEXT) VALUES (1, 'Jane Austen', 'To sit in the shade on a fine day and look upon verdure is the most perfect refreshment.');
+INSERT INTO TOPIC (ID, NAME) VALUES (2, 'relaxation');
+INSERT INTO TOPIC (ID, NAME) VALUES (3, 'enjoyment');
+INSERT INTO QUOTE_TOPIC VALUES (1, 2);
+INSERT INTO QUOTE_TOPIC VALUES (1, 3);
 INSERT INTO QUOTE (ID, AUTHOR, TEXT) VALUES (2, 'Mark Twain', 'Go to Heaven for the climate, Hell for the company.');
+INSERT INTO TOPIC (ID, NAME) VALUES (4, 'humor');
+INSERT INTO QUOTE_TOPIC VALUES (2, 4);
 INSERT INTO QUOTE (ID, AUTHOR, TEXT) VALUES (3, 'Oscar Wilde', 'True friends stab you in the front.');
+INSERT INTO TOPIC (ID, NAME) VALUES (5, 'friendship');
+INSERT INTO QUOTE_TOPIC VALUES (1, 5);
+
