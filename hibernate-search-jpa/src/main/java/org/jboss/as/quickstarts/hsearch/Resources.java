@@ -52,8 +52,8 @@ public class Resources {
     
     //ftem for HSearch
     @Produces @SearchQual @Dependent
-     public FullTextEntityManager getFullTextEntityManager(EntityManager em) {
-         return Search.getFullTextEntityManager(em); 
-     }
+    public FullTextEntityManager getFullTextEntityManager(EntityManager em) {
+        return Search.getFullTextEntityManager(em); 
+    }
 
 }

@@ -36,9 +36,9 @@ public class QuoteDaoImpl implements QuoteDao {
         entityManager.persist(quote);
     }*/
     
-    public List<Quote> list()	{
-    	return
-    		entityManager.createQuery("from Quote").getResultList();
+    public List<Quote> list() {
+        return
+            entityManager.createQuery("from Quote").getResultList();
     }
 
 }
