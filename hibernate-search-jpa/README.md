@@ -3,14 +3,16 @@ hibernate-search-jpa: Hibernate-Search Example
 Author: Dimitrios Zakas 
 Level: Intermediate
 Technologies: Hibernate-Search, CDI, JSF, EJB , JPA
-Summary: Demonstrates full text-search on a JPA entity 
-Target Product: (EAP, WFK, JDG, etc) Source: (The URL for the repository that is the source of record for this quickstart)
+Summary: Demonstrates full text-search on JPA entities
+Target Product: (EAP, WFK, JDG, etc) 
+Source: (The URL for the repository that is the source of record for this quickstart)
 
 This file is meant to serve as a template or guideline for your own quickstart README.md file. Be sure to replace QUICKSTART_NAME and YOUR_NAME, with the appropriate values.
 
 Contributor instructions are prefixed with 'Contributor: '
 
 What is it?
+-----------
 
 Contributor: This is where you provide an overview of what the quickstart demonstrates. For example:
 
