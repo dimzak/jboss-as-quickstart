@@ -41,15 +41,15 @@ import org.hibernate.search.annotations.TokenizerDef;
 @AnalyzerDef(name = "snowballanalyzer",
 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
 filters = {
-		@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-		@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-				@Parameter(name = "language", value = "English")
-		})
-})
+        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+        @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+             @Parameter(name = "language", value = "English")
+        })
+        })
 @Indexed
 public class Quote {
-	
-	//@DocumentId is not required 
+
+    //@DocumentId is not required 
     @Id
     @GeneratedValue
     private Long id;
@@ -65,39 +65,35 @@ public class Quote {
     @ManyToMany
     private Set<Topic> topics = new HashSet<Topic>();
     
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public Set<Topic> getTopics() {
-		return topics;
-	}
+    public Set<Topic> getTopics() {
+        return topics;
+    }
 
-	public void setTopics(Set<Topic> topics) {
-		this.topics = topics;
-	}
-	
-
-
-    
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
+    }
 }

@@ -131,10 +131,10 @@
         
         <!-- Hibernate Search -->
         <dependency>
-   			<groupId>org.hibernate</groupId>
-   			<artifactId>hibernate-search</artifactId>
-  			 <version>4.3.0.Final</version>
-		</dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>4.3.0.Final</version>
+        </dependency>
 
     </dependencies>
 

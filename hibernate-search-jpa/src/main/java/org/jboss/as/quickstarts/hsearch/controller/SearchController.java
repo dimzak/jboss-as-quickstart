@@ -47,35 +47,34 @@ public class SearchController {
     FullTextEntityManager ftem;
     
     @Produces
-	public List<Quote> getQuotes() {
-		return quotes;
-	}
-
-    
-    public void search()	{
-    	if(searchStr.isEmpty())	{
-    		ListQuotes();
-    	}
-    	else	{
-    		QueryBuilder qb = ftem.getSearchFactory().buildQueryBuilder().forEntity(Quote.class).get();
-    		   Query luceneQuery = qb.keyword()
-    		      .onField("author")
-    		      .andField("text")
-    		      .andField("topics.name")
-    		      .matching(searchStr)
-    		      .createQuery();
-    		    FullTextQuery objectQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
-    		   quotes = (List<Quote>) objectQuery.getResultList();
-    	}
+    public List<Quote> getQuotes() {
+        return quotes;
     }
 
-	
-	
-	//Empty search field
-	public void ListQuotes()	{
-		quotes = quoteDao.list();
-	}
-	
+    
+    public void search() {
+        if(searchStr.isEmpty()) {
+            ListQuotes();
+        }
+        else {
+            QueryBuilder qb = ftem.getSearchFactory().buildQueryBuilder().forEntity(Quote.class).get();
+            Query luceneQuery = qb.keyword()
+                .onField("author")
+                .andField("text")
+                .andField("topics.name")
+                .matching(searchStr)
+                .createQuery();
+            FullTextQuery objectQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
+            quotes = (List<Quote>) objectQuery.getResultList();
+        }
+    }
+
+
+    //Empty search field
+    public void ListQuotes() {
+        quotes = quoteDao.list();
+    }
+
     public String getSearchStr() {
         return searchStr;
     }
@@ -85,9 +84,9 @@ public class SearchController {
     }
     
     
-	public void setQuotes(List<Quote> quotes) {
-		this.quotes = quotes;
-	}
+    public void setQuotes(List<Quote> quotes) {
+        this.quotes = quotes;
+    }
     
    
 }
