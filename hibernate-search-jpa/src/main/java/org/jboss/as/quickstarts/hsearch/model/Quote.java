@@ -37,10 +37,24 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 
+
+/*
+ * {@ link Indexed} is used to tell Hsearch to create an index on this entity
+ * and {@ link Field} are the fields to be indexed
+ */
 @Entity
+/*
+ * To define an Analyzer the steps are:
+ * {@ link AnalyzerDef} and the name of your  analyzer
+ * {@ link CharFilterDef}  list of charFilters before the tokenization(not covered)
+ * {@ link TokenizerDef} tokenizer definition, 
+ * tokenizing the input stream into individual words 
+ * {@ link TokenFilterDef} apply changes to words after the tokenizer
+ */
 @AnalyzerDef(name = "snowballanalyzer",
 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
 filters = {
+		//notice the Solr Framework imports
         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
              @Parameter(name = "language", value = "English")
@@ -49,7 +63,7 @@ filters = {
 @Indexed
 public class Quote {
 
-    //@DocumentId is not required 
+    //{@ link DocumentId} is not required since {@ link Id} is present 
     @Id
     @GeneratedValue
     private Long id;
@@ -61,6 +75,9 @@ public class Quote {
     @Analyzer(definition = "snowballanalyzer")
     private String text;
     
+    /* indexes the Topic entity with the {@ link ManyToMany} association
+     * as part of th Quote entity
+     */
     @IndexedEmbedded
     @ManyToMany
     private Set<Topic> topics = new HashSet<Topic>();

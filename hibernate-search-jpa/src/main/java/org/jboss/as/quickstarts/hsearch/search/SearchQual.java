@@ -26,7 +26,9 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
-
+/*
+ * Qualifier to help determining the HSearch implementation
+ */
 @Qualifier
 @Retention(RUNTIME)
 @Target({TYPE, METHOD, FIELD, PARAMETER})
