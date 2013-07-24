@@ -32,7 +32,7 @@ import org.jboss.as.quickstarts.hsearch.search.SearchQual;
 
 public class Resources {
 
-    // Expose an entity manager using the resource producer pattern
+    // Expose an entity manager
     @PersistenceContext
     @Produces
     private EntityManager em;
@@ -50,7 +50,7 @@ public class Resources {
     }
     
     
-    //ftem for HSearch
+    //ftem for HSearch 
     @Produces @SearchQual @Dependent
     public FullTextEntityManager getFullTextEntityManager(EntityManager em) {
         return Search.getFullTextEntityManager(em); 

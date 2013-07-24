@@ -26,7 +26,8 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 @Singleton
 @Startup
 public class InitSearch {
-
+	
+	//SearchQual implementation
     @Inject
     @SearchQual
     private FullTextEntityManager ftem;
@@ -34,7 +35,7 @@ public class InitSearch {
     @PostConstruct
     public void start() {
         try {
-            //remove entities before starting
+            //remove already indexed entities before starting
             ftem.createIndexer().purgeAllOnStart(true).startAndWait();
         } 
         catch (InterruptedException e) {

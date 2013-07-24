@@ -17,6 +17,7 @@
 package org.jboss.as.quickstarts.hsearch.controller;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -25,7 +26,6 @@ import javax.inject.Named;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.jboss.as.quickstarts.hsearch.dao.QuoteDao;
 import org.jboss.as.quickstarts.hsearch.model.Quote;
@@ -46,12 +46,22 @@ public class SearchController {
     @SearchQual
     FullTextEntityManager ftem;
     
+    @Inject
+    private Logger log;
+    
     @Produces
     public List<Quote> getQuotes() {
         return quotes;
     }
-
     
+    /*
+     * There are 2 options for executing the search: 
+     * Lucene API and Hsearch Query DSL.The 2nd will be used.
+     * We already have the ftem(injected) from our EntityManager.
+     * We then create a QueryBuilder for our Entity and then the 
+     * Lucene query.We then wrap the last in a JPA query and 
+     * return the results
+     */    
     public void search() {
         if(searchStr.isEmpty()) {
             ListQuotes();
@@ -64,15 +74,22 @@ public class SearchController {
                 .andField("topics.name")
                 .matching(searchStr)
                 .createQuery();
-            FullTextQuery objectQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
-            quotes = (List<Quote>) objectQuery.getResultList();
+            javax.persistence.Query persQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
+            quotes = (List<Quote>) persQuery.getResultList();
+            
+            log.info("for String:" + searchStr + " returned " + quotes.size() + " quote(s)");
         }
     }
 
 
-    //Empty search field
+    /*
+     * When textfield is empty,
+     * all quotes will be returned 
+     */
     public void ListQuotes() {
         quotes = quoteDao.list();
+        
+        log.info("All quotes returned");
     }
 
     public String getSearchStr() {
