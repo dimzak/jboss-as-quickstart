@@ -16,6 +16,8 @@
  */
 package org.jboss.as.quickstarts.hsearch.search;
 
+import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -31,15 +33,22 @@ public class InitSearch {
     @Inject
     @SearchQual
     private FullTextEntityManager ftem;
+    
+    @Inject
+    private Logger log;
 
     @PostConstruct
     public void start() {
         try {
-            //remove already indexed entities before starting
+            /*
+             * The MassIndexer API is used to create the indexes
+             * Optionally it can define the number of threads for the 
+             * index and the cache mode
+             */
             ftem.createIndexer().purgeAllOnStart(true).startAndWait();
         } 
         catch (InterruptedException e) {
-            e.printStackTrace();//need to be changed
+        	log.severe("Can not create index");
         }
     }
 
