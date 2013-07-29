@@ -54,19 +54,21 @@ public class SearchController {
         return quotes;
     }
     
-    /*
-     * There are 2 options for executing the search: 
-     * Lucene API and Hsearch Query DSL.The 2nd will be used.
-     * We already have the ftem(injected) from our EntityManager.
-     * We then create a QueryBuilder for our Entity and then the 
-     * Lucene query.We then wrap the last in a JPA query and 
-     * return the results
-     */    
+    //if search textfield is empty, all quotes will be returned
     public void search() {
         if(searchStr.isEmpty()) {
             ListQuotes();
         }
         else {
+        	/* 
+             * There are 2 options for executing the search: 
+             * Lucene API and Hsearch Query DSL.The 2nd will be used.
+             * Ftem is ready(injected).
+             * QueryBuilder for the Quote class
+             * Lucene Query from QueryBuilder
+             * Wrap the Lucene query in a JPA query
+             * return the results of type Quote
+             */    
             QueryBuilder qb = ftem.getSearchFactory().buildQueryBuilder().forEntity(Quote.class).get();
             Query luceneQuery = qb.keyword()
                 .onField("author")
@@ -82,10 +84,7 @@ public class SearchController {
     }
 
 
-    /*
-     * When textfield is empty,
-     * all quotes will be returned 
-     */
+    //return all quotes
     public void ListQuotes() {
         quotes = quoteDao.list();
         

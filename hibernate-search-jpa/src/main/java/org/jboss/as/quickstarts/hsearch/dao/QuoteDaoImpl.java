@@ -30,12 +30,8 @@ public class QuoteDaoImpl implements QuoteDao {
 
     @Inject
     private EntityManager entityManager;
-
-
-    /*public void createQuote(Quote quote) {
-        entityManager.persist(quote);
-    }*/
     
+    //Retrieve all quotes 
     public List<Quote> list() {
         return
             entityManager.createQuery("from Quote").getResultList();

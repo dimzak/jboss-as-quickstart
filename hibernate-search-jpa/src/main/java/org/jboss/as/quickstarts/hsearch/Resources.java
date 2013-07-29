@@ -50,7 +50,9 @@ public class Resources {
     }
     
     
-    //ftem for HSearch 
+    /*
+     * Expose FullEntityManager of type {@ link SearchQual}
+     */
     @Produces @SearchQual @Dependent
     public FullTextEntityManager getFullTextEntityManager(EntityManager em) {
         return Search.getFullTextEntityManager(em); 
