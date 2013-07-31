@@ -23,6 +23,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceUnit;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -42,7 +43,7 @@ public class SearchController {
     
     private List<Quote> quotes;
     
-    @Inject
+    @PersistenceUnit //@Inject
     @SearchQual
     FullTextEntityManager ftem;
     

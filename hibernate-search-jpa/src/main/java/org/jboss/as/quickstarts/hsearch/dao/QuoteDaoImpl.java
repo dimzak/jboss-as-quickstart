@@ -19,16 +19,16 @@ package org.jboss.as.quickstarts.hsearch.dao;
 import java.util.List;
 
 import javax.ejb.Stateful;
-import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceUnit;
 
 import org.jboss.as.quickstarts.hsearch.model.Quote;
 
 @Stateful
 public class QuoteDaoImpl implements QuoteDao {
 
-    @Inject
+    @PersistenceUnit //@Inject
     private EntityManager entityManager;
     
     //Retrieve all quotes 

@@ -28,8 +28,10 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.as.quickstarts.hsearch.Resources;
 import org.jboss.as.quickstarts.hsearch.controller.SearchController;
 import org.jboss.as.quickstarts.hsearch.dao.QuoteDao;
+import org.jboss.as.quickstarts.hsearch.dao.QuoteDaoImpl;
 import org.jboss.as.quickstarts.hsearch.model.Quote;
 import org.jboss.as.quickstarts.hsearch.model.Topic;
+import org.jboss.as.quickstarts.hsearch.search.InitSearch;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -42,7 +44,8 @@ public class QuoteSearchTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, QuoteSearchTest.class.getSimpleName() + ".war")
-                .addClasses(SearchController.class, QuoteDao.class, Resources.class)
+                .addClasses(SearchController.class, QuoteDao.class, 
+                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 // Deploy our test datasource
@@ -51,9 +54,6 @@ public class QuoteSearchTest {
 
     @Inject
     SearchController searchController;
-
-    @Inject
-    Logger log;
 
     @Test
     public void testEmptySearchField() throws Exception {
