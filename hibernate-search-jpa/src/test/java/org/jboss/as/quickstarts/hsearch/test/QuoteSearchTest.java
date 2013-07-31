@@ -19,8 +19,10 @@ package org.jboss.as.quickstarts.hsearch.test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -31,15 +33,14 @@ import org.jboss.as.quickstarts.hsearch.dao.QuoteDao;
 import org.jboss.as.quickstarts.hsearch.dao.QuoteDaoImpl;
 import org.jboss.as.quickstarts.hsearch.model.Quote;
 import org.jboss.as.quickstarts.hsearch.model.Topic;
-import org.jboss.as.quickstarts.hsearch.search.InitSearch;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(Arquillian.class)
 public class QuoteSearchTest {
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -50,17 +51,20 @@ public class QuoteSearchTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml");
+                  //.addAsLibraries((Collection<? extends Archive<?>>) Maven.resolver()
+                      //  .loadPomFromFile("pom.xml"));
+                
     }
 
     @Inject
     SearchController searchController;
 
+
     @Test
     public void testEmptySearchField() throws Exception {
-    	searchController.setSearchStr("");
+    	searchController.setSearchStr("NotGonnaFindMe");
     	searchController.search();
-    	assertNotNull( "Search should never return null", searchController.getQuotes() );
-		assertTrue( "Search results should be empty", searchController.getQuotes().isEmpty() );
+    	assertTrue( "Search results should be empty", searchController.getQuotes().isEmpty());
     	
        
     }
