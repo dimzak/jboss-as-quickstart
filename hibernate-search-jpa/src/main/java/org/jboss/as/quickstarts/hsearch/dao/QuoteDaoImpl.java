@@ -28,7 +28,7 @@ import org.jboss.as.quickstarts.hsearch.model.Quote;
 @Stateful
 public class QuoteDaoImpl implements QuoteDao {
 
-    @PersistenceUnit //@Inject
+	@PersistenceUnit //@Inject
     private EntityManager entityManager;
     
     //Retrieve all quotes 
