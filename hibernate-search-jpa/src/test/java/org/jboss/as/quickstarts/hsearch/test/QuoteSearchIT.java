@@ -72,7 +72,6 @@ public class QuoteSearchIT {
 				.jtaDataSource( "java:jboss/datasources/HSearchJPAQuickstartTestDS" )
 				.getOrCreateProperties()
 					.createProperty().name( "hibernate.hbm2ddl.auto" ).value( "create-drop" ).up()
-					.createProperty().name( "hibernate.search.default.lucene_version" ).value( "LUCENE_CURRENT" ).up()
 					.createProperty().name( "hibernate.search.default.directory_provider" ).value( "ram" ).up()
 				.up().up()
 			.exportAsString();
