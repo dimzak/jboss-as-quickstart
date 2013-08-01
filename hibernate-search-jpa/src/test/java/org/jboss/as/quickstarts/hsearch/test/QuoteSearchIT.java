@@ -20,13 +20,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 
-import org.hibernate.search.Version;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.as.quickstarts.hsearch.Resources;
@@ -35,20 +32,21 @@ import org.jboss.as.quickstarts.hsearch.dao.QuoteDao;
 import org.jboss.as.quickstarts.hsearch.dao.QuoteDaoImpl;
 import org.jboss.as.quickstarts.hsearch.model.Quote;
 import org.jboss.as.quickstarts.hsearch.model.Topic;
+import org.jboss.as.quickstarts.hsearch.search.InitSearch;
+import org.jboss.as.quickstarts.hsearch.search.SearchQual;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
-import org.jboss.shrinkwrap.descriptor.api.spec.se.manifest.ManifestDescriptor;
+import org.jboss.shrinkwrap.descriptor.api.persistence20.PersistenceDescriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@RunWith(Arquillian.class)
 public class QuoteSearchIT {
 	
 	@Deployment
@@ -59,21 +57,35 @@ public class QuoteSearchIT {
 
 		     return ShrinkWrap.create(WebArchive.class, QuoteSearchIT.class.getSimpleName() + ".war")
 		            .addClasses(SearchController.class, QuoteDao.class, 
-	                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class)
-		            .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+	                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class, InitSearch.class, SearchQual.class)
+		            .addAsResource(persistenceXml(), "META-INF/persistence.xml")
 		            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibraries(libs)
 		            // Deploy our test datasource
 		            .addAsWebInfResource("test-ds.xml");
 	}
+	
+	private static Asset persistenceXml() {
+		String persistenceXml = Descriptors.create( PersistenceDescriptor.class )
+			.version( "2.0" )
+			.createPersistenceUnit()
+				.name( "primary" )
+				.jtaDataSource( "java:jboss/datasources/HSearchJPAQuickstartTestDS" )
+				.getOrCreateProperties()
+					.createProperty().name( "hibernate.hbm2ddl.auto" ).value( "create-drop" ).up()
+					.createProperty().name( "hibernate.search.default.lucene_version" ).value( "LUCENE_CURRENT" ).up()
+					.createProperty().name( "hibernate.search.default.directory_provider" ).value( "ram" ).up()
+				.up().up()
+			.exportAsString();
+		return new StringAsset( persistenceXml );
+	}
 
 
-    //@Inject
-   //SearchController searchController;
+    @Inject
+    SearchController searchController;
 
 
     @Test
     public void testEmptySearchField() throws Exception {
-    	SearchController searchController = new SearchController();
     	searchController.setSearchStr("NotGonnaFindMe");
     	searchController.search();
     	assertTrue( "Search results should be empty", !searchController.getSearchStr().isEmpty());
