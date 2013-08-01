@@ -43,7 +43,7 @@ public class SearchController {
     
     private List<Quote> quotes;
     
-    @PersistenceUnit //@Inject
+    @Inject
     @SearchQual
     FullTextEntityManager ftem;
     

@@ -19,12 +19,14 @@ package org.jboss.as.quickstarts.hsearch.test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
 
+import org.hibernate.search.Version;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.as.quickstarts.hsearch.Resources;
@@ -35,36 +37,46 @@ import org.jboss.as.quickstarts.hsearch.model.Quote;
 import org.jboss.as.quickstarts.hsearch.model.Topic;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.descriptor.api.Descriptors;
+import org.jboss.shrinkwrap.descriptor.api.spec.se.manifest.ManifestDescriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-public class QuoteSearchTest {
-    @Deployment
-    public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, QuoteSearchTest.class.getSimpleName() + ".war")
-                .addClasses(SearchController.class, QuoteDao.class, 
-                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class)
-                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                // Deploy our test datasource
-                .addAsWebInfResource("test-ds.xml");
-                  //.addAsLibraries((Collection<? extends Archive<?>>) Maven.resolver()
-                      //  .loadPomFromFile("pom.xml"));
-                
-    }
+public class QuoteSearchIT {
+	
+	@Deployment
+	public static Archive<?> createTestArchive() {
+		 String[] deps = {"org.hibernate:hibernate-search"};
 
-    @Inject
-    SearchController searchController;
+		        File[] libs = Maven.resolver().loadPomFromFile("pom.xml").resolve(deps).withTransitivity().asFile();
+
+		     return ShrinkWrap.create(WebArchive.class, QuoteSearchIT.class.getSimpleName() + ".war")
+		            .addClasses(SearchController.class, QuoteDao.class, 
+	                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class)
+		            .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+		            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibraries(libs)
+		            // Deploy our test datasource
+		            .addAsWebInfResource("test-ds.xml");
+	}
+
+
+    //@Inject
+   //SearchController searchController;
 
 
     @Test
     public void testEmptySearchField() throws Exception {
+    	SearchController searchController = new SearchController();
     	searchController.setSearchStr("NotGonnaFindMe");
     	searchController.search();
-    	assertTrue( "Search results should be empty", searchController.getQuotes().isEmpty());
+    	assertTrue( "Search results should be empty", !searchController.getSearchStr().isEmpty());
     	
        
     }
