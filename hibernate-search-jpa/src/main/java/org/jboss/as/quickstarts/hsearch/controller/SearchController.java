@@ -38,8 +38,6 @@ public class SearchController {
 
     @Inject
     private QuoteDao quoteDao;
-
-    private String searchStr;
     
     private List<Quote> quotes;
     
@@ -56,14 +54,14 @@ public class SearchController {
     }
     
     //if search textfield is empty, all quotes will be returned
-    public void search() {
-        if(searchStr.isEmpty()) {
+    public void search(String searchString) {
+        if(searchString.isEmpty()) {
             ListQuotes();
         }
         else {
         	/* 
-             * There are 2 options for executing the search: 
-             * Lucene API and Hsearch Query DSL.The 2nd will be used.
+             * There are many options for executing the search: 
+             * Lucene API, Lucene Query Parser, Hsearch Query DSL.The 3nd will be used here.
              * Ftem is ready(injected).
              * QueryBuilder for the Quote class
              * Lucene Query from QueryBuilder
@@ -75,12 +73,12 @@ public class SearchController {
                 .onField("author")
                 .andField("text")
                 .andField("topics.name")
-                .matching(searchStr)
+                .matching(searchString)
                 .createQuery();
             javax.persistence.Query persQuery = ftem.createFullTextQuery(luceneQuery, Quote.class);
             quotes = (List<Quote>) persQuery.getResultList();
             
-            log.info("for String:" + searchStr + " returned " + quotes.size() + " quote(s)");
+            log.info("for String:" + searchString + " returned " + quotes.size() + " quote(s)");
         }
     }
 
@@ -91,19 +89,4 @@ public class SearchController {
         
         log.info("All quotes returned");
     }
-
-    public String getSearchStr() {
-        return searchStr;
-    }
-
-    public void setSearchStr(String searchStr) {
-        this.searchStr = searchStr;
-    }
-    
-    
-    public void setQuotes(List<Quote> quotes) {
-        this.quotes = quotes;
-    }
-    
-   
 }

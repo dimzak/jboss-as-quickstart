@@ -27,11 +27,10 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="searchStr">Enter anything:</h:outputLabel>
                 <h:inputText id="searchStr"
-                    value="#{searchController.searchStr}" />
-                <h:message for="searchStr" />
+                    value="#{searchStr}" />
             </h:panelGrid>
             <h:commandButton id="search" value="Search"
-                action="#{searchController.search}" />
+                action="#{searchController.search(searchStr)}" />
         </h:form>
         <h2>Quotes List:</h2>
         <h:panelGroup rendered="#{empty searchController.quotes}">

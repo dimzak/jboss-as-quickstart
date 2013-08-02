@@ -16,11 +16,9 @@
  */
 package org.jboss.as.quickstarts.hsearch.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -57,9 +55,13 @@ public class QuoteSearchIT {
 
 		     return ShrinkWrap.create(WebArchive.class, QuoteSearchIT.class.getSimpleName() + ".war")
 		            .addClasses(SearchController.class, QuoteDao.class, 
-	                		Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class, InitSearch.class, SearchQual.class)
+	                 Resources.class, QuoteDaoImpl.class, Quote.class, Topic.class, InitSearch.class, SearchQual.class)
+	                 //persistence.xml for the test
 		            .addAsResource(persistenceXml(), "META-INF/persistence.xml")
-		            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibraries(libs)
+		            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+		            .addAsLibraries(libs)
+		            //Populate test database 
+		            .addAsResource("import.sql")   
 		            // Deploy our test datasource
 		            .addAsWebInfResource("test-ds.xml");
 	}
@@ -85,11 +87,20 @@ public class QuoteSearchIT {
 
     @Test
     public void testEmptySearchField() throws Exception {
-    	searchController.setSearchStr("NotGonnaFindMe");
-    	searchController.search();
-    	assertTrue( "Search results should be empty", !searchController.getSearchStr().isEmpty());
-    	
-       
+    	searchController.search("NotGonnaFindMe");
+    	assertEquals( "QuoteList should be empty", true, searchController.getQuotes().isEmpty());   
+    }
+    
+    @Test
+    public void testReturnAllQuotes() throws Exception {
+    	searchController.search("");
+    	assertEquals("All quotes are three", 3, searchController.getQuotes().size());
+    }
+    
+    @Test
+    public void testNormalQuoteSearch() throws Exception {
+    	searchController.search("Mark");
+    	assertEquals("One quote should be returned", 1, searchController.getQuotes().size());
     }
 
 }
