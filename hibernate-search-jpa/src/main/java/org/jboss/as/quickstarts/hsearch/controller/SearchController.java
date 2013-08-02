@@ -23,30 +23,29 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.EntityManager;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.jboss.as.quickstarts.hsearch.dao.QuoteDao;
 import org.jboss.as.quickstarts.hsearch.model.Quote;
-import org.jboss.as.quickstarts.hsearch.search.SearchQual;
+import org.jboss.as.quickstarts.hsearch.search.HSearch;
 
 @Named
 @RequestScoped
 public class SearchController {
-
-    @Inject
-    private QuoteDao quoteDao;
     
-    private List<Quote> quotes;
+    //ftem is of type {@ link HSearch}
+    @Inject @HSearch
+    private FullTextEntityManager ftem;
     
     @Inject
-    @SearchQual
-    FullTextEntityManager ftem;
+    private EntityManager entityManager;
     
     @Inject
     private Logger log;
+    
+    private List<Quote> quotes;
     
     @Produces
     public List<Quote> getQuotes() {
@@ -56,10 +55,10 @@ public class SearchController {
     //if search textfield is empty, all quotes will be returned
     public void search(String searchString) {
         if(searchString.isEmpty()) {
-            ListQuotes();
+            getAllQuotes();
         }
         else {
-        	/* 
+            /* 
              * There are many options for executing the search: 
              * Lucene API, Lucene Query Parser, Hsearch Query DSL.The 3nd will be used here.
              * Ftem is ready(injected).
@@ -83,10 +82,8 @@ public class SearchController {
     }
 
 
-    //return all quotes
-    public void ListQuotes() {
-        quotes = quoteDao.list();
-        
+    public void getAllQuotes() {
+        quotes = entityManager.createQuery("from Quote").getResultList();
         log.info("All quotes returned");
     }
 }
