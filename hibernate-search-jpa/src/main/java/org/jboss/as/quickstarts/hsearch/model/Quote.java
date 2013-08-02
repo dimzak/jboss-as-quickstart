@@ -54,7 +54,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 @AnalyzerDef(name = "snowballanalyzer",
 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
 filters = {
-		//part of the Solr Framework
+        //part of the Solr Framework
         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
              @Parameter(name = "language", value = "English")

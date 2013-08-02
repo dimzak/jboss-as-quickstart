@@ -28,7 +28,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
-import org.jboss.as.quickstarts.hsearch.search.SearchQual;
+import org.jboss.as.quickstarts.hsearch.search.HSearch;
 
 public class Resources {
 
@@ -51,9 +51,9 @@ public class Resources {
     
     
     /*
-     * Expose FullEntityManager of type {@ link SearchQual}
+     * Expose FullEntityManager of type Hibernate-Search{@ link HSearch}
      */
-    @Produces @SearchQual @Dependent
+    @Produces @HSearch @Dependent
     public FullTextEntityManager getFullTextEntityManager(EntityManager em) {
         return Search.getFullTextEntityManager(em); 
     }

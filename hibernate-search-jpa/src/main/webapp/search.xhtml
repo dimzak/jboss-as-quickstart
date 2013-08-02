@@ -23,7 +23,7 @@
 <ui:composition template="template.xhtml">
     <ui:define name="content">
         <h:messages />
-        <h:form id="greetForm">
+        <h:form id="searchForm">
             <h:panelGrid columns="3">
                 <h:outputLabel for="searchStr">Enter anything:</h:outputLabel>
                 <h:inputText id="searchStr"
@@ -48,7 +48,7 @@
             </h:column>
             <h:column>
                 <f:facet name="header">Quote</f:facet>
-                <br/><textarea rows="3" cols="50" style="border:none">#{_quote.text}</textarea>
+                <br/><p style="padding: 0 20px"><cite>#{_quote.text}</cite></p>
             </h:column>
         </h:dataTable>
     </ui:define>
