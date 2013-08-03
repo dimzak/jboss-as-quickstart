@@ -98,7 +98,7 @@ public class QuoteSearchTest {
     }
 
     @Test
-    public void testNormalQuoteSearch() throws Exception {
+    public void testQuoteFullTextSearch() throws Exception {
         searchController.search("Mark");
         assertEquals("One quote should be returned", 1, searchController.getQuotes().size());
         assertEquals("Mark Twain", searchController.getQuotes().iterator().next().getAuthor());
