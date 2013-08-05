@@ -28,8 +28,8 @@
         <jta-data-source>java:jboss/datasources/HSearchJPAQuickstartDS</jta-data-source>
         <properties>
             <!-- Properties for Hibernate -->
-        <!--<property name="hibernate.hbm2ddl.auto" value="create-drop" />-->
-            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <!--<property name="hibernate.show_sql" value="true" />-->
             
             <!-- HSearch in filesystem:
             Replace comments with the following property to set the 
