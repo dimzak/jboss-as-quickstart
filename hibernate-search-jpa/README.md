@@ -13,7 +13,7 @@ What is it?
 This example demonstrates a full text based search on JPA entities.
 The web application consists of a search field and the result list.
 When nothing is entered, the full list will be displayed.
-The entities are 'Quote' and 'Topic' with a ManyToMany relationship
+The entities are 'Quote' and 'Topic' with a ManyToMany relationship.
 This example also contains an Arquillian test.
 
 
